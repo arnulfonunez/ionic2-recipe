@@ -1,17 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
-/*
-  Generated class for the EditRecipe page.
 
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
 @Component({
   selector: 'page-edit-recipe',
   templateUrl: 'edit-recipe.html'
 })
-export class EditRecipePage {
+export class EditRecipePage implements OnInit{
+
+ protected mode: string = 'New';
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {}
 
@@ -19,4 +16,7 @@ export class EditRecipePage {
     console.log('ionViewDidLoad EditRecipePage');
   }
 
+ngOnInit(){
+  this.mode = this.navParams.get('mode');
+}
 }
