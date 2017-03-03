@@ -7,12 +7,31 @@
 
 <ion-content padding>
   <form #theForm="ngForm" (ngSubmit)="onSubmitRecipe(theForm)">
-    <ion-list >
+    <ion-list>
       <ion-item>
         <ion-label floating>Title</ion-label>
-        <ion-input type="text" name="title" required ngModel></ion-input>
+        <ion-input type="text" name="title" required [(ngModel)]="theForm.value.title"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Description</ion-label>
+        <ion-textarea required ngModel name="description"></ion-textarea>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Difficulty</ion-label>
+        <ion-select required ngModel name="difficulty">
+          <ion-option value="{{item}}" *ngFor="let item of diffiCultyLevelOptions">{{item}}</ion-option>
+        </ion-select>
       </ion-item>
     </ion-list>
+
+    <button ion-button type="submit" block [disabled]="!theForm.valid" icon-left>
+      <ion-icon name="briefcase"></ion-icon>
+      Save
+      </button>
+
   </form>
+
 
 </ion-content>
