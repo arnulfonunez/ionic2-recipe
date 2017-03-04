@@ -12,7 +12,6 @@ export class TabsPage {
  protected shoppingListPage: any = ShoppingListPage;
  protected recipesPage: any = RecipesPage;
 
-
   constructor(public navCtrl: NavController, public navParams: NavParams) {}
 
   ionViewDidLoad() {

@@ -16,7 +16,6 @@ import { EditRecipePage } from '../pages/edit-recipe/edit-recipe.ts';
     ShoppingListPage    ,
     TabsPage,
     EditRecipePage
-    
   ],
   imports: [
     IonicModule.forRoot(MyApp)

@@ -1,5 +1,3 @@
-import { ArrayObservable } from 'rxjs/observable/ArrayObservable';
-import { ArrayType } from '@angular/compiler/src/output/output_ast';
 import { Ingredient } from '../models/ingredient';
 
 
