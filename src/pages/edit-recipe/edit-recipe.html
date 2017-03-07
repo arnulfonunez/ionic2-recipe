@@ -19,15 +19,26 @@
 
       <ion-item>
         <ion-label floating>Difficulty</ion-label>
-        <ion-select required ngModel name="difficulty">
-          <ion-option value="{{item}}" *ngFor="let item of diffiCultyLevelOptions">{{item}}</ion-option>
+        <ion-select required [ngModel]="difficultyLevel" name="difficulty">
+          <ion-option ng-selected="selected" [value]="item" *ngFor="let item of diffiCultyLevelOptions">{{item}} </ion-option> 
+
         </ion-select>
+      </ion-item>
+
+    </ion-list>
+
+    <button type="button" clear ion-button block (click)="onManageIngredients()">Manage Ingredients</button>
+
+    <ion-list >
+      <ion-item>
+        <ion-label>Ingredient Name</ion-label>
+        <ion-input type="text"></ion-input>
       </ion-item>
     </ion-list>
 
     <button ion-button type="submit" block [disabled]="!theForm.valid" icon-left>
       <ion-icon name="briefcase"></ion-icon>
-      Save
+      Save Recipe
       </button>
 
   </form>
