@@ -30,9 +30,9 @@
     <button type="button" clear ion-button block (click)="onManageIngredients()">Manage Ingredients</button>
 
     <ion-list >
-      <ion-item>
-        <ion-label>Ingredient Name</ion-label>
-        <ion-input type="text"></ion-input>
+      <ion-item *ngFor="let ingredient of ingredientList;let i = index">
+        <ion-label floating>Ingredient Name</ion-label>
+        <ion-input type="text" [ngModel]="ingredient.name" name="ingredient_{{i}}" id="{{i}}"></ion-input>
       </ion-item>
     </ion-list>
 

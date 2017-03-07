@@ -1,3 +1,5 @@
+import { RecipesService } from '../services/recipes';
+import { Utils } from '../services/utils';
 import { ShoppingListService } from '../services/shopping-list';
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
@@ -30,6 +32,6 @@ import { EditRecipePage } from '../pages/edit-recipe/edit-recipe.ts';
     TabsPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}
-  ,ShoppingListService]
+  ,ShoppingListService, Utils, RecipesService]
 })
 export class AppModule {}

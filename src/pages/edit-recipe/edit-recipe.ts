@@ -1,6 +1,9 @@
+import { Ingredient } from '../../models/ingredient';
+import { RecipesService } from '../../services/recipes';
+import { Utils } from '../../services/utils';
 import { NgForm } from '@angular/forms/src/directives';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NavController, NavParams,ActionSheetController,ActionSheet } from 'ionic-angular';
+import {Toast,ToastController, ActionSheet, ActionSheetController, Alert, AlertController, NavController, NavParams } from 'ionic-angular';
 
 
 @Component({
@@ -9,13 +12,15 @@ import { NavController, NavParams,ActionSheetController,ActionSheet } from 'ioni
 })
 export class EditRecipePage implements OnInit{
 
-@ViewChild ('theForm') theForm: NgForm;
+//@ViewChild ('theForm') theForm: NgForm;
  //protected theForm: NgForm = null; 
  protected mode: string = 'New';
  protected difficultyLevel: string = "Medium";
  protected diffiCultyLevelOptions: string[] = ['Easy','Medium','Hard'];
+ protected ingredientList: Ingredient[]= [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private actionSheetController: ActionSheetController) {}
+  constructor(public navCtrl: NavController, public navParams: NavParams, private actionSheetController: ActionSheetController,
+  private alertController: AlertController, private toastController: ToastController, private utils: Utils, private recipesService: RecipesService) {}
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad EditRecipePage');
@@ -29,25 +34,41 @@ protected onSubmitRecipe(theForm: NgForm): void{
 //console.log(theForm);
 //console.log(this.theForm);
 //theForm.value.title = "a test";
+//Since the ingredient is only adding a name and not the amount, we can use the map function to convert the name string into an object. 
+//Example start
+let ingredientsTest: Ingredient[] = [];
+let ingredientListTest: string[] = ['test1','test2'];
+ingredientsTest = ingredientListTest.map(name => {return {name: name, amount:1} });
+//Example end
+
+let frmValue:any = theForm.value;
+this.recipesService.addRecipe2(frmValue.title,frmValue.description,frmValue.difficulty,this.ingredientList);
+//theForm.reset();
+this.navCtrl.popToRoot();
 console.log(theForm);
 }
 
+private actionSheet:ActionSheet= null;
+
 protected onManageIngredients(): void{
-  let actionSheet:ActionSheet = this.actionSheetController.create(
+  this.actionSheet = this.actionSheetController.create(
     {
        title: 'Manage Ingredients' ,
        buttons:[
          {
            text: 'Add Ingredient',
            handler: () => {
-               console.log('Add Ingredient selected');
+               console.log('Add ingredient selected');
+               this.createNewIngredientAlert().present();
            }
          },
          {
            text: 'Remove all Ingredients',
            role: 'destructive',
            handler: () => {
+             this.createRemoveAllIngredientsAlert().present();
              console.log('Remove all ingredients selected');
+             return false;
            }
           },
            {
@@ -57,10 +78,87 @@ protected onManageIngredients(): void{
        ]
     }
   );
+  this.actionSheet.present();
+}
 
-  actionSheet.present();
+private createNewIngredientAlert(): Alert{
+  let newIngredientAlert:Alert = this.alertController.create(
+    {
+      title: 'Add Ingredient',
+      inputs:[
+        {
+          name:'alertIngredientName',
+          placeholder:'Ingredient Name'
+        },
+        {
+          name:'ingredientAmount',
+          placeholder:'Amount',
+          type:'number'
+        }
+      ],
+      buttons:[
+        {
+          text: 'Cancel',
+          role:'cancel'
+        }
+        ,
+        {
+          text: 'Add',
+          handler: data => {
+            if(Utils.isEmpty(data.alertIngredientName) || Utils.isEmpty(data.ingredientAmount)){
+                console.log('The alert ingredient name or amount is empty');
+                this.createToast('Please enter valid value!',1500).present();
+                return false;
+            }
+            this.ingredientList.push( new Ingredient(data.alertIngredientName,data.ingredientAmount));      
+            this.createToast('Ingredient has been added',1000).present();      
+          }
+        }
+        ]
+    }
+  );
+  return newIngredientAlert;
+}
+
+private createRemoveAllIngredientsAlert(): Alert{
+  let removeAllIngredientAlert = this.alertController.create(
+    {
+      title:'Delete Ingredients',
+      message: 'Are you sure that you want to remove all ingredients?',
+      buttons:[
+        {
+          text:'Cancel',
+          role:'cancel'
+        }
+        ,
+        {
+          text:'OK',
+          role:'destructive',
+          handler: ()=> {
+            this.ingredientList = [];
+            this.actionSheet.dismiss();
+            this.createToast('All ingredients have been removed',1500).present();
+          }
+        }
+      ]
+
+    }
+  );
+  return removeAllIngredientAlert;
+}
+
+private createToast(message:string, duration: number = 1000,position: string = 'botton' ): Toast{
+
+  let toast: Toast = this.toastController.create({
+    message: message,
+    duration: duration,
+    position: position
+  });
+
+  return toast;
+}
 
 }
 
 
-}
+//Toasts are little messages that disappear after a coupple of seconds.

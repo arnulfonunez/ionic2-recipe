@@ -11,5 +11,11 @@
 
 
 <ion-content padding>
-This is the recipes page
+<ion-list>
+  <button ion-item *ngFor="let recipe of recipeList; let i = index" (click)="onLoadRecipe(i,recipe)">
+ <h2>{{recipe.title}}</h2>
+ <ion-note>{{recipe.difficulty}}</ion-note>
+
+  </button>
+</ion-list>
 </ion-content>
