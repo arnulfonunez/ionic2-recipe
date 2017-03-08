@@ -9,19 +9,20 @@
     <ion-list>
       <ion-item>
         <ion-label floating>Title</ion-label>
-        <ion-input type="text" name="title" required [(ngModel)]="theForm.value.title"></ion-input>
+        <ion-input type="text" name="title" required [(ngModel)]="recipe.title"></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label floating>Description</ion-label>
-        <ion-textarea required ngModel name="description"></ion-textarea>
+        <ion-textarea required [(ngModel)]="recipe.description" name="description"></ion-textarea>
       </ion-item>
 
       <ion-item>
         <ion-label floating>Difficulty</ion-label>
-        <ion-select required [ngModel]="difficultyLevel" name="difficulty">
+        
+        <ion-select required [(ngModel)]="recipe.difficulty" name="difficultySelect">
           <ion-option ng-selected="selected" [value]="item" *ngFor="let item of diffiCultyLevelOptions">{{item}} </ion-option> 
-
+<!-- ng-selected="selected" [ngModel]="item" -->
         </ion-select>
       </ion-item>
 
@@ -32,7 +33,7 @@
     <ion-list >
       <ion-item *ngFor="let ingredient of ingredientList;let i = index">
         <ion-label floating>Ingredient Name</ion-label>
-        <ion-input type="text" [ngModel]="ingredient.name" name="ingredient_{{i}}" id="{{i}}"></ion-input>
+        <ion-input type="text" [(ngModel)]="ingredient.name" name="ingredient_{{i}}" id="{{i}}" required></ion-input>
       </ion-item>
     </ion-list>
 

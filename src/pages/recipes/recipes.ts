@@ -1,3 +1,4 @@
+import { RecipePage } from '../recipe/recipe';
 import { Recipe } from '../../models/recipe';
 import { RecipesService } from '../../services/recipes';
 import { EditRecipePage } from '../edit-recipe/edit-recipe';
@@ -27,8 +28,8 @@ ionViewWillEnter(){
   this.recipeList = this.recipesService.getRecipes();
 }
 
-
-public onLoadRecipe(index:number,recipe:Recipe):void{
+public onLoadRecipe(indexPar:number,recipePar:Recipe):void{
+  this.navCtrl.push(RecipePage,{recipeIndex: indexPar, selectedRecipe: recipePar})
 }
 
 ngOnInit(){

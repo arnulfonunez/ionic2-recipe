@@ -1,10 +1,10 @@
+import { Recipe } from '../../models/recipe';
 import { Ingredient } from '../../models/ingredient';
 import { RecipesService } from '../../services/recipes';
 import { Utils } from '../../services/utils';
 import { NgForm } from '@angular/forms/src/directives';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import {Toast,ToastController, ActionSheet, ActionSheetController, Alert, AlertController, NavController, NavParams } from 'ionic-angular';
-
 
 @Component({
   selector: 'page-edit-recipe',
@@ -18,6 +18,8 @@ export class EditRecipePage implements OnInit{
  protected difficultyLevel: string = "Medium";
  protected diffiCultyLevelOptions: string[] = ['Easy','Medium','Hard'];
  protected ingredientList: Ingredient[]= [];
+ protected selectedRecipeIndex: number = -1;
+ @Input() protected  recipe:Recipe = null;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private actionSheetController: ActionSheetController,
   private alertController: AlertController, private toastController: ToastController, private utils: Utils, private recipesService: RecipesService) {}
@@ -28,6 +30,17 @@ export class EditRecipePage implements OnInit{
 
 ngOnInit(){
   this.mode = this.navParams.get('mode');
+  
+  if(this.mode.trim() === 'Edit'){
+    this.selectedRecipeIndex = this.navParams.get('selectedRecipeIndex');
+    this.recipe = this.navParams.get('selectedRecipe');
+    this.ingredientList = this.recipe.ingredients;
+  }
+  else
+  {
+    this.selectedRecipeIndex = -1;
+    this.recipe = new Recipe('','',this.difficultyLevel,[]);
+  }
 }
 
 protected onSubmitRecipe(theForm: NgForm): void{
@@ -36,13 +49,22 @@ protected onSubmitRecipe(theForm: NgForm): void{
 //theForm.value.title = "a test";
 //Since the ingredient is only adding a name and not the amount, we can use the map function to convert the name string into an object. 
 //Example start
-let ingredientsTest: Ingredient[] = [];
-let ingredientListTest: string[] = ['test1','test2'];
-ingredientsTest = ingredientListTest.map(name => {return {name: name, amount:1} });
+    //let ingredientsTest: Ingredient[] = [];
+    //let ingredientListTest: string[] = ['test1','test2'];
+    //ingredientsTest = ingredientListTest.map(name => {return {name: name, amount:1} });
 //Example end
 
 let frmValue:any = theForm.value;
-this.recipesService.addRecipe2(frmValue.title,frmValue.description,frmValue.difficulty,this.ingredientList);
+
+let recipeTemp: Recipe = new Recipe(this.recipe.title,this.recipe.description,this.recipe.difficulty,this.ingredientList);
+
+if(this.mode.trim() === 'New'){
+  this.recipesService.addRecipe(recipeTemp);
+}
+else if(this.mode.trim() === 'Edit'){
+  this.recipesService.updateRecipe(this.selectedRecipeIndex,recipeTemp);
+}
+
 //theForm.reset();
 this.navCtrl.popToRoot();
 console.log(theForm);
@@ -159,6 +181,4 @@ private createToast(message:string, duration: number = 1000,position: string = '
 }
 
 }
-
-
 //Toasts are little messages that disappear after a coupple of seconds.
