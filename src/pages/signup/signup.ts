@@ -1,12 +1,8 @@
+import { User } from '../../models/user';
+import { NgForm } from '@angular/forms';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
-/*
-  Generated class for the Signup page.
-
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
 @Component({
   selector: 'page-signup',
   templateUrl: 'signup.html'
@@ -18,5 +14,10 @@ export class SignupPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad SignupPage');
   }
+
+onSignup(myForm:NgForm):void{
+let user: User = new User(myForm.value.email,myForm.value.userName, myForm.value.password);
+
+}
 
 }

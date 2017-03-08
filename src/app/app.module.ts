@@ -1,3 +1,6 @@
+import { SettingsPage } from '../pages/settings/settings';
+import { SignupPage } from '../pages/signup/signup';
+import { SigninPage } from '../pages/signin/signin';
 import { RecipesService } from '../services/recipes';
 import { Utils } from '../services/utils';
 import { ShoppingListService } from '../services/shopping-list';
@@ -17,7 +20,10 @@ import { EditRecipePage } from '../pages/edit-recipe/edit-recipe.ts';
     RecipesPage    ,
     ShoppingListPage    ,
     TabsPage,
-    EditRecipePage
+    EditRecipePage,
+    SigninPage,
+    SignupPage,
+    SettingsPage
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -29,7 +35,10 @@ import { EditRecipePage } from '../pages/edit-recipe/edit-recipe.ts';
     RecipePage    ,
     RecipesPage    ,
     ShoppingListPage    ,
-    TabsPage
+    TabsPage,
+    SigninPage,
+    SignupPage,
+    SettingsPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}
   ,ShoppingListService, Utils, RecipesService]
