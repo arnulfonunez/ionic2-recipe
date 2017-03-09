@@ -64,13 +64,12 @@ onShowOptions($event):void{
                         this.retrieveRecipes(token);
                       }
                       else if(action === 'store'){
-
+                        this.storeRecipes(token);
                       }
                       else{
                         this.spinner.dismiss();
                       }
                     }
-
                   )
                   .catch(
                     error =>{
