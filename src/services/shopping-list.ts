@@ -1,3 +1,4 @@
+import { List } from 'ionic-angular/es2015';
 import { Observable } from 'rxjs/Rx';
 import { AuthService } from './auth';
 import { Utils } from './utils';
@@ -48,8 +49,19 @@ public storeShoppingList(token:string):Observable<Response>{
     return this.http.put(url,this.ingredientList).map((response:Response) =>{return response.json();});
 }
 
-public retrieveShoppingList(token:string){
-
+public retrieveShoppingList(token:string): Observable<any>{ //using Observable of any because that's the return type of do method.
+    let userId: string= this.authService.getActiveUser().uid;
+    let url:string = this.baseUrl + '/' + userId + '/' + Utils.firebaseShoppingListJson + '?auth=' + token;
+    return this.http.get(url).map(
+        (response:Response) =>
+        {
+            return response.json();
+        }
+    ).do(
+        (data) =>{ //Since we are already in the shopping list service , just grab the list of ingredients and save it on the local List.
+            this.ingredientList = data;
+        }
+    );
 }
 
 

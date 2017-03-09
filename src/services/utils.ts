@@ -10,5 +10,8 @@ public static readonly firebaseDatabaseURL:string = "https://ionic2-recipe-c0dd5
 public static readonly firebaseStorageBucket:string = "ionic2-recipe-c0dd5.appspot.com";
 public static readonly firebaseMessagingSenderId:string = "104588216188";
 public static readonly firebaseShoppingListJson:string = "shoppinglist.json";
+public static readonly firebaseRecipeListJson:string = "recipeList.json";
+
+
 
 }

@@ -1,4 +1,3 @@
-import { SigninPage } from '../signin/signin';
 import { AuthService } from '../../services/auth';
 import { User } from '../../models/user';
 import { NgForm } from '@angular/forms';
@@ -8,9 +7,8 @@ import {
     AlertController,
     LoadingController,
     NavController,
-    NavParams,
-    Toast,
-    ToastController
+    NavParams
+
 } from 'ionic-angular';
 
 @Component({
@@ -21,7 +19,7 @@ export class SignupPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
   private authService:AuthService,
-  private loadingController:LoadingController, private alertController:AlertController, private toastController: ToastController) {}
+  private loadingController:LoadingController, private alertController:AlertController) {}
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SignupPage');
@@ -64,6 +62,5 @@ this.authService.signup(user).then( data =>{
 });
 
 }
-
 
 }
