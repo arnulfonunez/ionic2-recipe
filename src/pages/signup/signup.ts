@@ -1,8 +1,17 @@
+import { SigninPage } from '../signin/signin';
 import { AuthService } from '../../services/auth';
 import { User } from '../../models/user';
 import { NgForm } from '@angular/forms';
 import { Component } from '@angular/core';
-import {Alert,AlertController, NavController, NavParams,LoadingController } from 'ionic-angular';
+import {
+    Alert,
+    AlertController,
+    LoadingController,
+    NavController,
+    NavParams,
+    Toast,
+    ToastController
+} from 'ionic-angular';
 
 @Component({
   selector: 'page-signup',
@@ -12,7 +21,7 @@ export class SignupPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
   private authService:AuthService,
-  private loadingController:LoadingController, private alertController:AlertController) {}
+  private loadingController:LoadingController, private alertController:AlertController, private toastController: ToastController) {}
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SignupPage');
@@ -23,13 +32,24 @@ onSignup(myForm:NgForm):void{
     content:'Please wait...'
   });
 
+
 spinner.present();
 
 let user: User = new User(myForm.value.email,myForm.value.userName, myForm.value.password);
 
 this.authService.signup(user).then( data =>{
-  console.log(data);
   spinner.dismiss();
+  /* this part is not needed with firebase because firebase will login the user is signup is successful.
+  let toast: Toast = this.toastController.create({
+    message: 'Signup successful. Please login',
+    duration: 1500,
+    position:'bottom'
+  });
+  toast.present();
+  this.navCtrl.setRoot(SigninPage);
+  */
+  
+
 }).catch(error =>{
 
   let signupFailAlert: Alert = this.alertController.create({
@@ -44,5 +64,6 @@ this.authService.signup(user).then( data =>{
 });
 
 }
+
 
 }

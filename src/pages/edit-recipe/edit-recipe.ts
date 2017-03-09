@@ -3,7 +3,7 @@ import { Ingredient } from '../../models/ingredient';
 import { RecipesService } from '../../services/recipes';
 import { Utils } from '../../services/utils';
 import { NgForm } from '@angular/forms/src/directives';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {Toast,ToastController, ActionSheet, ActionSheetController, Alert, AlertController, NavController, NavParams } from 'ionic-angular';
 
 @Component({
@@ -54,7 +54,7 @@ protected onSubmitRecipe(theForm: NgForm): void{
     //ingredientsTest = ingredientListTest.map(name => {return {name: name, amount:1} });
 //Example end
 
-let frmValue:any = theForm.value;
+//let frmValue:any = theForm.value;
 
 let recipeTemp: Recipe = new Recipe(this.recipe.title,this.recipe.description,this.recipe.difficulty,this.ingredientList);
 
@@ -179,6 +179,5 @@ private createToast(message:string, duration: number = 1000,position: string = '
 
   return toast;
 }
-
 }
 //Toasts are little messages that disappear after a coupple of seconds.
