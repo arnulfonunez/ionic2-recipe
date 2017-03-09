@@ -1,3 +1,4 @@
+import { AuthService } from '../services/auth';
 import { SettingsPage } from '../pages/settings/settings';
 import { SignupPage } from '../pages/signup/signup';
 import { SigninPage } from '../pages/signin/signin';
@@ -39,8 +40,9 @@ import { EditRecipePage } from '../pages/edit-recipe/edit-recipe.ts';
     SigninPage,
     SignupPage,
     SettingsPage
+    
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}
-  ,ShoppingListService, Utils, RecipesService]
+  ,ShoppingListService, Utils, RecipesService,AuthService]
 })
 export class AppModule {}
