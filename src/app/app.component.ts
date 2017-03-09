@@ -1,3 +1,4 @@
+import { Utils } from '../services/utils';
 import { AuthService } from '../services/auth';
 import { NavController } from 'ionic-angular/es2015';
 import { SignupPage } from '../pages/signup/signup';
@@ -20,11 +21,6 @@ export class MyApp {
   signupPage:any = SignupPage;
   settingsPage:any = SettingsPage;
 
-public readonly firebaseApiKey:string = "AIzaSyAyoPs4xhygUUzz4fOSZZka7z4W5qgY8fs";
-public readonly firebaseAuthDomain:string = "ionic2-recipe-c0dd5.firebaseapp.com";
-public readonly firebaseDatabaseURL:string = "https://ionic2-recipe-c0dd5.firebaseio.com";
-public readonly firebaseStorageBucket:string = "ionic2-recipe-c0dd5.appspot.com";
-public readonly firebaseMessagingSenderId:string = "104588216188";
 public isAuthenticated:boolean = false;
 
 
@@ -34,8 +30,8 @@ public isAuthenticated:boolean = false;
   constructor(platform: Platform, private menuController: MenuController, private authService: AuthService) {
 
     firebase.initializeApp({
-      apiKey: this.firebaseApiKey,
-    authDomain: this.firebaseAuthDomain
+      apiKey: Utils.firebaseApiKey,
+    authDomain: Utils.firebaseAuthDomain
     });
 
     firebase.auth().onAuthStateChanged(

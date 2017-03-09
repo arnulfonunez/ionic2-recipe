@@ -1,3 +1,4 @@
+import { ShoppingListOptionsPage } from '../pages/shopping-list/shoppinglist-options/shoppinglist-options';
 import { AuthService } from '../services/auth';
 import { SettingsPage } from '../pages/settings/settings';
 import { SignupPage } from '../pages/signup/signup';
@@ -24,7 +25,8 @@ import { EditRecipePage } from '../pages/edit-recipe/edit-recipe.ts';
     EditRecipePage,
     SigninPage,
     SignupPage,
-    SettingsPage
+    SettingsPage,
+    ShoppingListOptionsPage
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -39,7 +41,8 @@ import { EditRecipePage } from '../pages/edit-recipe/edit-recipe.ts';
     TabsPage,
     SigninPage,
     SignupPage,
-    SettingsPage
+    SettingsPage,
+    ShoppingListOptionsPage
     
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}
