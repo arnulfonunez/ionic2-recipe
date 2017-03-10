@@ -15,12 +15,12 @@
   <ion-list >
     <ion-item>
       <ion-label fixed>User Name</ion-label>
-      <ion-input type="email" ngModel name="email" required></ion-input>
+      <ion-input type="email" placeholder="User Name" ngModel name="email" required></ion-input>
     </ion-item>
     
     <ion-item>
       <ion-label fixed>Password</ion-label>
-      <ion-input type="password" ngModel name="password" required></ion-input>
+      <ion-input type="password" placeholder="Password" ngModel name="password" required></ion-input>
     </ion-item>
   </ion-list>
       <button ion-button block type="submit" [disabled]="!myForm.valid">Login</button>

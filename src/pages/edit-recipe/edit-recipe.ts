@@ -110,7 +110,8 @@ private createNewIngredientAlert(): Alert{
       inputs:[
         {
           name:'alertIngredientName',
-          placeholder:'Ingredient Name'
+          placeholder:'Ingredient Name',
+          type:'text'
         },
         {
           name:'ingredientAmount',
