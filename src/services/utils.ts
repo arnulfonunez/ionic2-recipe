@@ -1,4 +1,14 @@
+import { Injectable } from '@angular/core';
+import {LoadingController,Loading,Toast,ToastController, ActionSheet, ActionSheetController, Alert, AlertController} from 'ionic-angular';
+
+
+@Injectable()
 export class Utils{
+
+constructor(private toastController:ToastController, 
+private actionsheetController:ActionSheetController, 
+private alertController:AlertController,
+private loadingController:LoadingController){}
 
     public static isEmpty(str:String): boolean{
         return (!str || str.trim().length === 0);
@@ -13,5 +23,18 @@ public static readonly firebaseShoppingListJson:string = "shoppinglist.json";
 public static readonly firebaseRecipeListJson:string = "recipeList.json";
 
 
+
+public createToast(message:string, duration: number = 1500,position: string = 'botton' ): Toast{
+  let toast: Toast =  this.toastController.create({
+    message: message,
+    duration: duration,
+    position: position
+  });
+  return toast;
+}
+
+public createLoading(content:string = 'Please wait...'): Loading{
+  return this.loadingController.create({content:content});
+}
 
 }

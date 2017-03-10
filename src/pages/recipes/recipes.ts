@@ -1,3 +1,4 @@
+import { Utils } from '../../services/utils';
 import { AuthService } from '../../services/auth';
 import { RecipesOptionsPage } from './recipes-options/recipes-options';
 import { RecipePage } from '../recipe/recipe';
@@ -21,7 +22,8 @@ export class RecipesPage implements OnInit{
   private popoverController: PopoverController,
   private loadingController: LoadingController,
   private toastController: ToastController,
-  private authService:AuthService) {}
+  private authService:AuthService,
+  private utils:Utils) {}
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad RecipesPage');
@@ -48,7 +50,7 @@ ngOnInit(){
 }
 
 onShowOptions($event):void{
-  this.spinner = this.createLoading();
+  this.spinner = this.utils.createLoading();
   let popover = this.popoverController.create(RecipesOptionsPage);
   popover.present({ev:event});
   popover.onDidDismiss(
@@ -70,36 +72,52 @@ onShowOptions($event):void{
                         this.spinner.dismiss();
                       }
                     }
-                  )
-                  .catch(
+                  ).catch(
                     error =>{
                       this.spinner.dismiss();
-                      this.createToast(error.message).present();
+                      this.utils.createToast(error.message).present();
                     }
                   )
         }
   );
-
-
-
-}
-
-
-private retrieveRecipes(token:string):void{
-  this.recipesService.retrieveRecipes(token).subscribe(); //continue here
 }
 
 private storeRecipes(token:string):void{
-  this.recipesService.retrieveRecipes(token).subscribe(); //continue here
+  this.recipesService.storeRecipes(token).subscribe(
+    (data) =>{
+      this.spinner.dismiss();
+      this.utils.createToast('Store successful').present();
+    },
+    (error) =>{
+      this.spinner.dismiss();
+      console.log(error.json().error);
+      this.utils.createToast('Unable to save recipes.').present();
+    }
+  ); 
 }
 
+private retrieveRecipes(token:string):void{
+  this.recipesService.retrieveRecipes(token).subscribe(
+    (data: Recipe[]) =>{
+       
+       if(!data){
+         this.recipeList=[];
+         this.spinner.dismiss();
+         this.utils.createToast('Unable to retrieve recipes.').present();
+         return;
+       }
+       this.refreshRecipes();
+       this.spinner.dismiss();
+       this.utils.createToast('Retrieve successfu').present();
 
-private createToast(message:string, duration:number = 1500, position:string = 'bottom'):Toast{
-      return this.toastController.create({message:message,duration:duration,position:position});
-}
+    },
+    error =>{
+          console.log(error.json().error);
+          this.spinner.dismiss();
+          this.utils.createToast('Uable to retrieve recipes.').present();
+    }
 
-private createLoading(content:string = 'Please wait...'): Loading{
-  return this.loadingController.create({content:content});
+  ); 
 }
 
 

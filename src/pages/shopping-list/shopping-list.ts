@@ -1,3 +1,4 @@
+import { Utils } from '../../services/utils';
 
 import { LoadingController } from 'ionic-angular/components/loading/loading';
 import { AuthService } from '../../services/auth';
@@ -17,13 +18,15 @@ export class ShoppingListPage implements OnInit{
 
 // protected ingredientName: string = "test";
 // protected ingredientAmount: number = 1;
+private spinner:Loading = null;
 protected ingredientList: Ingredient[] = null;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private shoppingListService:ShoppingListService
   ,private popoverController:PopoverController
   ,private authService:AuthService
   ,private toastController: ToastController,
-  private loadingController: LoadingController) {}
+  private loadingController: LoadingController,
+  private utils:Utils) {}
 
     ngOnInit(){
           }
@@ -34,14 +37,13 @@ protected ingredientList: Ingredient[] = null;
   }
 
 protected onAddItem(theForm: NgForm): void{
-  let spinner:Loading = this.createLoading();
-  //spinner.present();
+//  this.spinner = this.createLoading();
+//  this.spinner.present();
   this.shoppingListService.addIngredient(new Ingredient(theForm.value.ingredientName,theForm.value.ingredientAmount));
   //After adding the values to the list, then reset the form so the user can enter a new ingredient.
   this.refreshIngredientList();
   theForm.reset();
-  //spinner.dismiss();
-  
+  //this.spinner.dismiss();
 }
 
 ionViewWillEnter(){
@@ -58,7 +60,7 @@ protected onDeleteIngredient(ingredientIndex: number): void{
 }
 
 protected onShowOptions(event):void{
-  let spinner:Loading = this.createLoading();
+  this.spinner = this.utils.createLoading();
   let popover = this.popoverController.create(ShoppingListOptionsPage);
   popover.present({ev:event});
   popover.onDidDismiss(
@@ -68,57 +70,25 @@ protected onShowOptions(event):void{
         let action:string = data.action;
         if(!action) return;
       
-      spinner.present();
+      this.spinner.present();
        this.authService.getActiveUser().getToken().then(
          (token:string) =>{
                         if(action === 'load'){
-
-                          this.shoppingListService.retrieveShoppingList(token).subscribe(
-                            (data: Ingredient[]) =>{
-
-                                  console.log(data);
-                                  if(!data){
-                                    //this.ingredientList = [];
-                                    this.createToast('Unable to retrieve shopping list. ').present();
-                                    spinner.dismiss();
-                                    return;
-                                  }
-                                    this.refreshIngredientList();
-                                    this.createToast('Retrieve successfull. ').present();
-                            },
-                            error => {
-                              console.log(error.json().error);
-                                    let toast:Toast = this.createToast('Unable to retrieve shopping list. ');
-                                    toast.present();
-                            }
-
-                          );
-
+                            this.retrieveShoppingList(token);
                             console.log('load action selected');
                           }
                         else if(action === 'store'){
-                             this.shoppingListService.storeShoppingList(token)
-                             .subscribe(
-                               (data) =>{
-                                    let toast:Toast = this.createToast('Store successful');
-                                    toast.present();
-                               },
-                               (error) =>{
-                                 console.log(error.json().error);
-                                     let toast:Toast = this.createToast('Unable to save shopping list. ');
-                                    toast.present();
-                                }
-                             );
+                             this.storeShoppingList(token);
                           }
-                          spinner.dismiss();
+                          else{
+                            this.spinner.dismiss();
+                          }
          }
-       )
-       .catch(
+       ).catch(
          error =>
          {
-           spinner.dismiss();
-           let toast: Toast = this.createToast('Unable to perform action. Please try later');
-           toast.present();
+           this.spinner.dismiss();
+           this.utils.createToast('Unable to perform action. Please try later').present();
          }
        );
        //spinner.dismiss();
@@ -127,13 +97,41 @@ protected onShowOptions(event):void{
 
 }
 
+private retrieveShoppingList(token:string):void{
+this.shoppingListService.retrieveShoppingList(token).subscribe(
+                            (data: Ingredient[]) =>{
+                                  //console.log(data);
+                                  if(!data){
+                                    this.ingredientList = [];
+                                    this.utils.createToast('Unable to retrieve shopping list. ').present();
+                                    this.spinner.dismiss();
+                                    return;
+                                  }
+                                    this.refreshIngredientList();
+                                    this.spinner.dismiss();
+                                    this.utils.createToast('Retrieve successfull. ').present();
+                            },
+                            error => {
+                              console.log(error.json().error);
+                                this.spinner.dismiss();
+                                    this.utils.createToast('Unable to retrieve shopping list. ').present();
+                            }
 
-private createToast(message:string, duration:number = 1500, position:string = 'bottom'):Toast{
-      return this.toastController.create({message:message,duration:duration,position:position});
+                          );
 }
 
-private createLoading(content:string = 'Please wait...'): Loading{
-  return this.loadingController.create({content:content});
-}
-
+private storeShoppingList(token:string):void{
+this.shoppingListService.storeShoppingList(token)
+                             .subscribe(
+                               (data) =>{
+                                 this.spinner.dismiss();
+                                    this.utils.createToast('Store successful').present();
+                               },
+                               (error) =>{
+                                 console.log(error.json().error);
+                                 this.spinner.dismiss();
+                                     this.utils.createToast('Unable to save shopping list.').present();
+                                }
+                             );
+                          }
 }

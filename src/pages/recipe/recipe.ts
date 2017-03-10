@@ -1,3 +1,4 @@
+import { Utils } from '../../services/utils';
 import { EditRecipePage } from '../edit-recipe/edit-recipe';
 import { ShoppingListService } from '../../services/shopping-list';
 import { RecipesService } from '../../services/recipes';
@@ -18,7 +19,8 @@ export class RecipePage implements OnInit{
   constructor(public navCtrl: NavController, public navParams: NavParams, 
   private toastController:ToastController,
   private alertController: AlertController, private recipesService: RecipesService,
-  private shoppingListService: ShoppingListService) {}
+  private shoppingListService: ShoppingListService,
+  private utils: Utils) {}
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad RecipePage');
@@ -38,14 +40,6 @@ public onDeleteRecipe():void{
   this.createDeleteRecipeAlert().present();
 }
 
-private createToast(message:string, duration: number = 1000,position: string = 'botton' ): Toast{
-  let toast: Toast = this.toastController.create({
-    message: message,
-    duration: duration,
-    position: position
-  });
-  return toast;
-}
 
 private createDeleteRecipeAlert(): Alert{
   let alert = this.alertController.create(
@@ -63,7 +57,7 @@ private createDeleteRecipeAlert(): Alert{
           role:'destructive',
           handler: ()=> {
             this.recipesService.deleteRecipe(this.selectedRecipeIndex);
-            this.createToast('Recipe deleted',1500).present();
+            this.utils.createToast('Recipe deleted',1500).present();
             this.navCtrl.popToRoot();
           }
         }

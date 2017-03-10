@@ -129,11 +129,11 @@ private createNewIngredientAlert(): Alert{
           handler: data => {
             if(Utils.isEmpty(data.alertIngredientName) || Utils.isEmpty(data.ingredientAmount)){
                 console.log('The alert ingredient name or amount is empty');
-                this.createToast('Please enter valid value!',1500).present();
+                this.utils.createToast('Please enter valid value!',1500).present();
                 return false;
             }
             this.ingredientList.push( new Ingredient(data.alertIngredientName,data.ingredientAmount));      
-            this.createToast('Ingredient has been added',1000).present();      
+            this.utils.createToast('Ingredient has been added',1000).present();      
           }
         }
         ]
@@ -159,7 +159,7 @@ private createRemoveAllIngredientsAlert(): Alert{
           handler: ()=> {
             this.ingredientList = [];
             this.actionSheet.dismiss();
-            this.createToast('All ingredients have been removed',1500).present();
+            this.utils.createToast('All ingredients have been removed',1500).present();
           }
         }
       ]
@@ -169,15 +169,5 @@ private createRemoveAllIngredientsAlert(): Alert{
   return removeAllIngredientAlert;
 }
 
-private createToast(message:string, duration: number = 1000,position: string = 'botton' ): Toast{
-
-  let toast: Toast = this.toastController.create({
-    message: message,
-    duration: duration,
-    position: position
-  });
-
-  return toast;
-}
 }
 //Toasts are little messages that disappear after a coupple of seconds.

@@ -51,7 +51,14 @@ public retrieveRecipes(token:string):Observable<any>{ //using Observable of any 
     let userId:string = this.authService.getActiveUser().uid;
     let url: string = this.baseUrl + '/' + userId + '/' + Utils.firebaseRecipeListJson + '?auth=' + token;
     return this.http.get(url).map((response:Response) => {
-        return response.json();
+           let tempRecipes: Recipe[] = response.json ? response.json() : [];
+
+           for(let recipe of tempRecipes){
+               if(!recipe.hasOwnProperty('ingredients')){
+                   recipe.ingredients = [];
+               }
+           }
+        return tempRecipes;
     }).do(
         (data) => {
             this.recipeList = data;
