@@ -5,6 +5,9 @@ import {LoadingController,Loading,Toast,ToastController, ActionSheet, ActionShee
 @Injectable()
 export class Utils{
 
+private alternativeBackgroundToggle:boolean=false;
+
+
 constructor(private toastController:ToastController, 
 private actionsheetController:ActionSheetController, 
 private alertController:AlertController,
@@ -36,5 +39,13 @@ public createToast(message:string, duration: number = 1500,position: string = 'b
 public createLoading(content:string = 'Please wait...'): Loading{
   return this.loadingController.create({content:content});
 }
+
+public setAlternativeBackgroundToggle(toggle:boolean):void{
+  this.alternativeBackgroundToggle = toggle;
+}
+
+public getAlternativeBackgroundToggle():boolean{
+  return this.alternativeBackgroundToggle;
+  }
 
 }
